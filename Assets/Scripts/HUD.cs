@@ -6,16 +6,25 @@ using UnityEngine.UI;
 public class HUD : MonoBehaviour
 {
     [SerializeField] private Text GoalsText;
-    private int goalsScored = 0;
+    [SerializeField] private Text ScoreText;
 
-    public void IncreaseScore()
+    private int goalsScored = 0;
+    private float score = 0;
+
+    public void IncreaseGoalCount()
     {
         goalsScored++;
+        UpdateUI();
+    }
+    public void IncreaseScore(float amount)
+    {
+        score += amount;
         UpdateUI();
     }
     void UpdateUI()
     {
         GoalsText.text = goalsScored.ToString();
+        ScoreText.text = score.ToString();
     }
 }
 
