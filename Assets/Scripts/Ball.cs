@@ -9,16 +9,19 @@ public class Ball : MonoBehaviour
     Rigidbody rb;
     Vector3 startingPosition;
 
+    [SerializeField] private VoidEvent onBallShoot;
+    [SerializeField] private VoidEvent onBallReset;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         startingPosition = transform.position;
+        ResetBall();
     }
 
     private void Update()
     {
-        if ((transform.position.z > 8 || transform.position.z < startingPosition.z - 2) || (transform.position.x < -6 || transform.position.x > 6))
+        if ((transform.position.z > 10 || transform.position.z < startingPosition.z - 2) || (transform.position.x < -6 || transform.position.x > 6))
         {
             ResetBall();
         }
@@ -31,6 +34,7 @@ public class Ball : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 var objecthitPonit = hit.point;
+                onBallShoot.Raise();
                 rb.AddForce(objecthitPonit * 10);
             }
 
@@ -42,5 +46,6 @@ public class Ball : MonoBehaviour
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         transform.position = startingPosition;
+        onBallReset.Raise();
     }
 }
